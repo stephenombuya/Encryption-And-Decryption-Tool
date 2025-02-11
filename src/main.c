@@ -75,7 +75,7 @@ void xorEncrypt(char *text, const char *key) {
 void generateRandomKey(char *key, int length) {
     const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     for (int i = 0; i < length; i++) {
-        key[i] = charset[rand() % strlen(charset)];
+        key[i] = charset[rand() % (sizeof(charset) - 1)];
     }
     key[length] = '\0';
 }
@@ -97,13 +97,15 @@ int main() {
     printf("1. Caesar Cipher\n");
     printf("2. Vigenère Cipher\n");
     printf("3. XOR Encryption\n");
-    scanf("%d", &method);
+    printf("Enter choice: ");
+    if (scanf("%d", &method) != 1) return 1;
     getchar();
 
     printf("Select operation:\n");
     printf("1. Encrypt\n");
     printf("2. Decrypt\n");
-    scanf("%d", &choice);
+    printf("Enter choice: ");
+    if (scanf("%d", &choice) != 1) return 1;
     getchar();
 
     printf("Enter text: ");
@@ -112,28 +114,20 @@ int main() {
 
     switch (method) {
         case 1:
-            if (choice == 1) caesarEncrypt(text);
-            else if (choice == 2) caesarDecrypt(text);
-            printf("Result: %s\n", text);
+            (choice == 1) ? caesarEncrypt(text) : caesarDecrypt(text);
             break;
-
         case 2:
             promptForKey(key, MAX_LENGTH, "Vigenère");
-            if (choice == 1) vigenereEncrypt(text, key);
-            else if (choice == 2) vigenereDecrypt(text, key);
-            printf("Result: %s\n", text);
+            (choice == 1) ? vigenereEncrypt(text, key) : vigenereDecrypt(text, key);
             break;
-
         case 3:
             promptForKey(key, MAX_LENGTH, "XOR");
             xorEncrypt(text, key);
-            printf("Result: %s\n", text);
             break;
-
         default:
             printf("Invalid choice!\n");
             return 1;
     }
-
+    printf("Result: %s\n", text);
     return 0;
 }
